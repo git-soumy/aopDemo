@@ -2,10 +2,8 @@ package com.soumy.aopdemo.aspect;
 
 import com.soumy.aopdemo.dto.StudentDto;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
@@ -47,15 +45,58 @@ public class LoggingAspect {
 //    }
 
 
-      @AfterThrowing(
-              value = "execution(* com.soumy.aopdemo.service.StudentService.createStudent(..))",
-              throwing = "exception")
-      public void logAfterThrowMethod(Throwable exception) {
-          System.out.println("Exception Type: " +  exception.getClass().getName());
-          System.out.println("Exception Type: " +  exception.getMessage());
+//      @AfterThrowing(
+//              value = "execution(* com.soumy.aopdemo.service.StudentService.createStudent(..))",
+//              throwing = "exception")
+//      public void logAfterThrowMethod(Throwable exception) {
+//          System.out.println("Exception Type: " +  exception.getClass().getName());
+//          System.out.println("Exception Type: " +  exception.getMessage());
+//      }
+
+//    @After(
+//            value = "execution(* com.soumy.aopdemo.service.StudentService.createStudent(..))")
+//    public void logAfterMethod() {
+//        System.out.println("Log After Method executed");
+//    }
+
+//    @Around(
+//            value = "execution(* com.soumy.aopdemo.service.StudentService.createStudent(..))")
+//    public Object logAroundMethod(ProceedingJoinPoint pjp)throws Throwable {
+//        System.out.println("Starting :" + pjp.getSignature().getName());
+//
+//        try {
+//            Object result = (StudentDto) pjp.proceed();
+//            System.out.println("Execution successfull");
+//
+//            return result;
+//        } catch (Exception e) {
+//            System.out.println("Execution failed: " + e.getMessage());
+//            throw e;
+//        } finally {
+//            System.out.println("Execution completed");
+//        }
+//
+//
+//    }
+
+@Around(
+        value = "execution(* com.soumy.aopdemo.service.StudentService.dummyMethod(..))")
+public Object logAroundMethod(ProceedingJoinPoint pjp)throws Throwable {
+
+    Object[] arr = pjp.getArgs();
+
+    String originalString = arr[0].toString();
+
+    String modifiedString = originalString.toUpperCase();
+
+    Object[] modifiedArr = {
+            modifiedString
+    };
+
+    return pjp.proceed(modifiedArr);
+}
 
 
-      }
 
 
 

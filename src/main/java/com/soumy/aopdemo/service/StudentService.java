@@ -9,6 +9,11 @@ public class StudentService {
     public StudentDto createStudent(StudentDto student) {
 
         System.out.println("Student saved");
-        throw new RuntimeException("Some error happened");
+//        throw new RuntimeException("Some error happened");
+        return student;
+    }
+
+    public String dummyMethod(String s) {
+        return s;
     }
 }
